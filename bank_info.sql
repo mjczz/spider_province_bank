@@ -16,8 +16,7 @@ CREATE TABLE nice_bank_info(
     bank_name VARCHAR(100) DEFAULT '' NOT NULL,
     mobile VARCHAR(30) DEFAULT '' NOT NULL,
     zip_code VARCHAR(30) DEFAULT '' NOT NULL,
-    address text,
-    swift_code VARCHAR(30) DEFAULT '' NOT NULL
+    address text
 );
 
 COMMENT ON TABLE "public"."nice_bank_info" IS '银行信息';
@@ -28,6 +27,7 @@ COMMENT ON COLUMN "public"."nice_bank_info"."bank_name" IS '名称';
 COMMENT ON COLUMN "public"."nice_bank_info"."mobile" IS '电话';
 COMMENT ON COLUMN "public"."nice_bank_info"."zip_code" IS '邮编';
 COMMENT ON COLUMN "public"."nice_bank_info"."address" IS '地址';
-COMMENT ON COLUMN "public"."nice_bank_info"."swift_code" IS 'WWIFT CODE';
 
 ALTER TABLE ONLY nice_bank_info ADD CONSTRAINT nice_bank_info_pkey PRIMARY KEY (id);
+
+CREATE UNIQUE INDEX idx_bank_no ON nice_bank_info(bank_no);

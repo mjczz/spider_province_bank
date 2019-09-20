@@ -78,46 +78,45 @@ func main() {
 	defer db.Close()
 
 	id := 1
-	rows, err := db.Query("SELECT * FROM nice_bank_info WHERE id = $1", id)
+	_, err = db.Query("SELECT * FROM nice_bank_info WHERE id = $1", id)
 	if err != nil {
 		log.Fatal(err)
 	}
-	fmt.Println(rows)
 
 	provinces := map[string]string{
-		"jiangsu" : "江苏",
-		"guangdong" : "广东",
-		"shandong" : "山东",
-		"hebei" : "河北",
-		"zhejiang" : "浙江",
-		"fujian" : "福建",
-		"liaoning" : "辽宁",
-		"anhui" : "安徽",
-		"hubei" : "湖北",
-		"sichuan" : "四川",
-		"shanxisheng" : "陕西",
-		"hunan" : "湖南",
-		"shanxi" : "山西",
-		"guizhou" : "贵州",
-		"henan" : "河南",
-		"heilongjiang" : "黑龙江",
-		"jilin" : "吉林",
-		"xinjiang" : "新疆",
-		"shanghai" : "上海",
-		"gansu" : "甘肃",
-		"yunnan" : "云南",
-		"beijing" : "北京",
-		"neimenggu" : "内蒙古",
-		"tianjin" : "天津",
-		"jiangxi" : "江西",
-		"chongqing" : "重庆",
-		"guangxi" : "广西",
-		"ningxia" : "宁夏",
-		"hainan" : "海南",
-		"qinghai" : "青海",
-		"xianggang" : "香港",
-		"xicang" : "西藏",
-		"aomen" : "澳门",
+		"jiangsu":      "江苏",
+		"guangdong":    "广东",
+		"shandong":     "山东",
+		"hebei":        "河北",
+		"zhejiang":     "浙江",
+		"fujian":       "福建",
+		"liaoning":     "辽宁",
+		"anhui":        "安徽",
+		"hubei":        "湖北",
+		"sichuan":      "四川",
+		"shanxisheng":  "陕西",
+		"hunan":        "湖南",
+		"shanxi":       "山西",
+		"guizhou":      "贵州",
+		"henan":        "河南",
+		"heilongjiang": "黑龙江",
+		"jilin":        "吉林",
+		"xinjiang":     "新疆",
+		"shanghai":     "上海",
+		"gansu":        "甘肃",
+		"yunnan":       "云南",
+		"beijing":      "北京",
+		"neimenggu":    "内蒙古",
+		"tianjin":      "天津",
+		"jiangxi":      "江西",
+		"chongqing":    "重庆",
+		"guangxi":      "广西",
+		"ningxia":      "宁夏",
+		"hainan":       "海南",
+		"qinghai":      "青海",
+		"xianggang":    "香港",
+		"xicang":       "西藏",
+		"aomen":        "澳门",
 	}
 
 	argsCount := len(os.Args)
@@ -146,24 +145,25 @@ func main() {
 			reader := csv.NewReader(file)
 			rows, _ := reader.ReadAll()
 
-			fmt.Println(rows)
+			fmt.Println("入库", fName, "start-----")
 			sqlstr := ""
 			for k, v := range rows {
 				if k == 0 {
 					continue
 				}
 
-				sqlstr += "INSERT INTO nice_bank_info(bank_no,bank_name,mobile,zip_code,address,swift_code,bank_province) VALUES('"+ v[0] + "','" + v[1] + "','" + v[2] + "','" + v[3] + "','" + v[4] + "','" + v[5] + "','" + v[6] + "');"
+				sqlstr += "INSERT INTO nice_bank_info(bank_no,bank_name,mobile,zip_code,address,bank_province) " +
+					"VALUES('" + v[0] + "','" + v[1] + "','" + v[2] + "','" + v[3] + "','" + v[4] + "','" + v[6] + "');"
 			}
-			fmt.Println(sqlstr)
 
-			result, err := db.Exec(sqlstr)
+			_, err = db.Exec(sqlstr)
 			if err != nil {
-				log.Fatal(err)
+				log.Fatal(sqlstr, err)
 			}
-			fmt.Println(result)
+
+			fmt.Print()
+			fmt.Println("入库", "end-----")
 		}
 	}
-
 
 }
